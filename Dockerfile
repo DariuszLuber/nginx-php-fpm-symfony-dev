@@ -1,7 +1,5 @@
 FROM php:7.1.6-fpm-alpine
 
-MAINTAINER ngineered <support@ngineered.co.uk>
-
 ENV php_conf /usr/local/etc/php-fpm.conf
 ENV fpm_conf /usr/local/etc/php-fpm.d/www.conf
 ENV php_vars /usr/local/etc/php/conf.d/docker-vars.ini
@@ -129,7 +127,12 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
   \
   # forward request and error logs to docker log collector
   && ln -sf /dev/stdout /var/log/nginx/access.log \
-  && ln -sf /dev/stderr /var/log/nginx/error.log
+  && ln -sf /dev/stderr /var/log/nginx/error.log \
+  #install Symfony
+  && mkdir -p /usr/local/bin \
+  && curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony \
+  && chmod a+x /usr/local/bin/symfony
+
 
 RUN echo @testing http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && \
 #    sed -i -e "s/v3.4/edge/" /etc/apk/repositories && \
